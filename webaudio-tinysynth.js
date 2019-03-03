@@ -1025,8 +1025,8 @@ function WebAudioTinySynth(opt){
     setAudioContext:function(actx,dest){
       this.audioContext=this.actx=actx;
       this.dest=dest;
-      if(!dest)
-        this.dest=actx.destination;
+      //if(!dest)
+      //  this.dest=actx.destination;
       this.tsdiff=performance.now()*.001-this.actx.currentTime;
       console.log("TSDiff:"+this.tsdiff);
       this.out=this.actx.createGain();
@@ -1066,7 +1066,8 @@ function WebAudioTinySynth(opt){
       }
       this.setMasterVol();
       this.out.connect(this.comp);
-      this.comp.connect(this.dest);
+      if(this.dest)
+        this.comp.connect(this.dest);
       this.chvol=[]; this.chmod=[]; this.chpan=[];
       this.wave={"w9999":this._createWave("w9999")};
       this.lfo=this.actx.createOscillator();
@@ -1092,6 +1093,9 @@ function WebAudioTinySynth(opt){
       this.reset();
       this.send([0x90,60,1]);
       this.send([0x90,60,0]);
+      
+      if(!this.dest)
+        return this.comp;
     },
   }
 /* webaudio-tinysynth coreobject */
