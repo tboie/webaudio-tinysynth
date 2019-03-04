@@ -1022,6 +1022,36 @@ function WebAudioTinySynth(opt){
     getAudioContext:function(){
       return this.actx;
     },
+    getConnectSourceNode:function(){
+      return this.comp;
+    },
+    destroy:function(){
+      this.reset();
+
+      this.out.disconnect();
+      if(this.conv)
+        this.conv.disconnect();
+      if(this.rev)
+        this.rev.disconnect();
+      this.comp.disconnect();
+      this.lfo.disconnect();
+
+      this.out = null;
+      this.conv = null;
+      this.rev = null
+      this.comp = null;
+      this.lfo = null;
+
+      for(var chNum=0;chNum<16;++chNum){
+        this.chvol[chNum].disconnect();
+        this.chmod[chNum].disconnect();
+        this.chpan[chNum].disconnect();
+
+        this.chvol[chNum] = null;
+        this.chmod[chNum] = null;
+        this.chpan[chNum] = null;
+      }
+    },
     setAudioContext:function(actx,dest){
       this.audioContext=this.actx=actx;
       this.dest=dest;
